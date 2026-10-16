@@ -1,0 +1,32 @@
+export const SECTORS = {
+  a: {
+    id: "a",
+    nome: "Parque Central",
+    cor: "r",
+    statusPill: "🔴 Prioridade alta · 4d em atraso",
+    metricas: "12,4 ha · 24 °C · 68% umid.",
+    ocorrencia: "⚠️ Roçadeira #102 inoperante",
+    path: "M60,60 L300,40 L340,170 L120,200Z",
+    labelPos: [170, 120],
+  },
+  b: {
+    id: "b",
+    nome: "Praça das Flores",
+    cor: "y",
+    statusPill: "🟡 Prioridade média · vence em 6d",
+    metricas: "3,1 ha · 24 °C · 71% umid.",
+    ocorrencia: "⚠️ Árvore com galho em risco",
+    path: "M380,50 L560,70 L540,180 L360,170Z",
+    labelPos: [450, 120],
+  },
+  c: {
+    id: "c",
+    nome: "Jardim Botânico",
+    cor: "g",
+    statusPill: "🟢 Em dia · próxima roçagem em 12d",
+    metricas: "8,7 ha · 26 °C · 64% umid.",
+    ocorrencia: "Sem ocorrências abertas",
+    path: "M150,230 L400,215 L430,330 L170,345Z",
+    labelPos: [290, 280],
+  },
+};

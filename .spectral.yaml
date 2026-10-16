@@ -1,0 +1,6 @@
+extends: spectral:oas
+rules:
+  # OpenAPI 3.1 com extensões customizadas fica mais tolerante.
+  operation-operationId-unique: off
+  info-license: off
+  oas3-api-servers: off

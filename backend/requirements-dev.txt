@@ -1,0 +1,10 @@
+-r requirements.txt
+
+# Testes
+pytest~=9.1.1
+pytest-cov~=7.1.0
+schemathesis~=4.31.1
+hypothesis~=6.170.0
+
+# Lint/format
+ruff~=0.17.1

@@ -1,0 +1,14 @@
+# Migrações Flask-Migrate (Alembic)
+
+Esta pasta é gerenciada pelo Flask-Migrate. Após criar/alterar modelos:
+
+```bash
+cd backend
+flask db migrate -m "create users table"
+flask db upgrade
+```
+
+Em CI, `flask db upgrade` é executado antes dos testes para garantir
+que o schema está em dia.
+
+Referência: specs/features/001-cadastro-usuarios/plan.md → Fase 2/T2.

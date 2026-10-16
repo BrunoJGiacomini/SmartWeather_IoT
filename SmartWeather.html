@@ -1,0 +1,1147 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>SmartWeather</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #f4f6f3;
+        --sf: #fff;
+        --sf2: #eef1ec;
+        --tx: #14201a;
+        --mu: #5e6b63;
+        --ln: #dde3dc;
+        --g: #10b981;
+        --gd: #0a8f63;
+        --r: #e5484d;
+        --y: #e9a100;
+        --b: #2f7de1;
+        --sh: 0 1px 2px rgba(20, 32, 26, 0.06);
+        box-sizing: border-box;
+        padding-top: env(safe-area-inset-top, 0px);
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+          --bg: #0c100e;
+          --sf: #151b18;
+          --sf2: #1c2420;
+          --tx: #e8eeea;
+          --mu: #8a988f;
+          --ln: #26302b;
+          --gd: #34d399;
+          --sh: none;
+        }
+      }
+      :root[data-theme="dark"] {
+        --bg: #0c100e;
+        --sf: #151b18;
+        --sf2: #1c2420;
+        --tx: #e8eeea;
+        --mu: #8a988f;
+        --ln: #26302b;
+        --gd: #34d399;
+        --sh: none;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+      }
+      html {
+        scroll-padding-top: env(safe-area-inset-top, 0px);
+      }
+      body {
+        background: var(--bg);
+        color: var(--tx);
+        font:
+          14px/1.5 "Instrument Sans",
+          system-ui,
+          sans-serif;
+      }
+      button,
+      select,
+      input {
+        font: inherit;
+        color: inherit;
+      }
+      button {
+        cursor: pointer;
+      }
+      :focus-visible {
+        outline: 2px solid var(--g);
+        outline-offset: 2px;
+      }
+      .btn {
+        background: var(--g);
+        color: #05261a;
+        border: 0;
+        border-radius: 8px;
+        padding: 9px 16px;
+        font-weight: 600;
+      }
+      .btn.o {
+        background: transparent;
+        color: var(--tx);
+        border: 1px solid var(--ln);
+      }
+      .btn.w {
+        width: 100%;
+        padding: 14px;
+      }
+      .card {
+        background: var(--sf);
+        border: 1px solid var(--ln);
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: var(--sh);
+      }
+      h1 {
+        font-size: 24px;
+        letter-spacing: -0.02em;
+      }
+      h2 {
+        font-size: 16px;
+      }
+      .mu {
+        color: var(--mu);
+      }
+      .sm {
+        font-size: 12px;
+      }
+      .pill {
+        display: inline-flex;
+        gap: 6px;
+        align-items: center;
+        padding: 2px 10px;
+        border-radius: 99px;
+        font-size: 12px;
+        font-weight: 600;
+        background: var(--sf2);
+      }
+      .pill.r {
+        color: var(--r);
+      }
+      .pill.y {
+        color: var(--y);
+      }
+      .pill.g {
+        color: var(--gd);
+      }
+      .pill.b {
+        color: var(--b);
+      }
+      #login {
+        min-height: 100vh;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+      #login .art {
+        background: #0a3d2c;
+        color: #fff;
+        padding: 48px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+      #login .art p {
+        font-size: 32px;
+        line-height: 1.2;
+        max-width: 14em;
+        letter-spacing: -0.02em;
+      }
+      #login form {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 14px;
+        max-width: 380px;
+        margin: auto;
+        padding: 32px;
+        width: 100%;
+      }
+      label {
+        display: grid;
+        gap: 4px;
+        font-weight: 500;
+      }
+      input,
+      select {
+        background: var(--sf);
+        border: 1px solid var(--ln);
+        border-radius: 8px;
+        padding: 10px 12px;
+      }
+      .seg {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+      .seg button {
+        background: var(--sf);
+        border: 1px solid var(--ln);
+        border-radius: 8px;
+        padding: 12px;
+        text-align: left;
+      }
+      .seg button[aria-pressed="true"] {
+        border-color: var(--g);
+        box-shadow: 0 0 0 1px var(--g);
+      }
+      #app {
+        display: none;
+        grid-template-columns: 232px 1fr;
+        min-height: 100vh;
+      }
+      nav {
+        background: var(--sf);
+        border-right: 1px solid var(--ln);
+        padding: 20px 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        position: sticky;
+        top: 0;
+        height: 100vh;
+      }
+      nav .logo {
+        font-weight: 700;
+        font-size: 18px;
+        padding: 4px 10px 20px;
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+      nav button {
+        background: none;
+        border: 0;
+        text-align: left;
+        padding: 9px 10px;
+        border-radius: 8px;
+        color: var(--mu);
+        display: flex;
+        justify-content: space-between;
+      }
+      nav button.on {
+        background: var(--sf2);
+        color: var(--tx);
+        font-weight: 600;
+      }
+      nav .sp {
+        flex: 1;
+      }
+      main {
+        padding: 28px 32px;
+        max-width: 1200px;
+        width: 100%;
+      }
+      .hd {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+      }
+      .grid {
+        display: grid;
+        gap: 16px;
+      }
+      .g4 {
+        grid-template-columns: repeat(4, 1fr);
+      }
+      .g3 {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .g2 {
+        grid-template-columns: 1fr 1fr;
+      }
+      .kpi b {
+        display: block;
+        font-size: 28px;
+        letter-spacing: -0.02em;
+        margin-top: 4px;
+      }
+      .tw {
+        overflow-x: auto;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 760px;
+      }
+      th {
+        text-align: left;
+        font-weight: 500;
+        color: var(--mu);
+        font-size: 12px;
+        padding: 10px 12px;
+        border-bottom: 1px solid var(--ln);
+      }
+      td {
+        padding: 14px 12px;
+        border-bottom: 1px solid var(--ln);
+      }
+      tr:last-child td {
+        border-bottom: 0;
+      }
+      .flt {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-bottom: 16px;
+      }
+      .map {
+        position: relative;
+        background: var(--sf2);
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid var(--ln);
+      }
+      .map svg {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+      .poly {
+        fill: var(--g);
+        fill-opacity: 0.18;
+        stroke: var(--g);
+        stroke-width: 1.5;
+        cursor: pointer;
+        transition: fill-opacity 0.15s;
+      }
+      .poly:hover {
+        fill-opacity: 0.38;
+      }
+      .poly.sel {
+        fill-opacity: 0.5;
+        stroke-width: 3;
+      }
+      .poly.r {
+        fill: var(--r);
+        stroke: var(--r);
+      }
+      .poly.y {
+        fill: var(--y);
+        stroke: var(--y);
+      }
+      .lbl {
+        font-size: 12px;
+        font-weight: 600;
+        fill: var(--tx);
+        pointer-events: none;
+        paint-order: stroke;
+        stroke: var(--sf2);
+        stroke-width: 3px;
+      }
+      .pop {
+        position: absolute;
+        right: 16px;
+        top: 16px;
+        width: 320px;
+        max-width: calc(100% - 32px);
+        background: var(--sf);
+        border: 1px solid var(--ln);
+        border-radius: 12px;
+        padding: 18px;
+        display: none;
+        gap: 14px;
+        flex-direction: column;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+      }
+      .pop.on {
+        display: flex;
+      }
+      .occ {
+        background: var(--sf2);
+        border-radius: 8px;
+        padding: 10px 12px;
+      }
+      .drawer {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 440px;
+        max-width: 100%;
+        background: var(--sf);
+        border-left: 1px solid var(--ln);
+        padding: 24px;
+        overflow: auto;
+        transform: translateX(100%);
+        transition: transform 0.25s;
+        z-index: 5;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+      .drawer.on {
+        transform: none;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .drawer {
+          transition: none;
+        }
+      }
+      .ph {
+        aspect-ratio: 4/3;
+        border-radius: 8px;
+        background: repeating-linear-gradient(
+          135deg,
+          var(--sf2),
+          var(--sf2) 10px,
+          var(--ln) 10px,
+          var(--ln) 11px
+        );
+        display: grid;
+        place-items: center;
+        color: var(--mu);
+        font-size: 12px;
+      }
+      .phone {
+        width: 340px;
+        max-width: 100%;
+        margin: 0 auto;
+        border: 8px solid var(--tx);
+        border-radius: 36px;
+        background: var(--bg);
+        padding: 20px 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+      .up {
+        border: 1.5px dashed var(--ln);
+        border-radius: 12px;
+        aspect-ratio: 1;
+        display: grid;
+        place-items: center;
+        text-align: center;
+        background: var(--sf);
+        font-size: 13px;
+        color: var(--mu);
+      }
+      .stp {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: var(--sf);
+        border: 1px solid var(--ln);
+        border-radius: 10px;
+        padding: 8px 12px;
+      }
+      .stp button {
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        border: 1px solid var(--ln);
+        background: var(--sf2);
+        font-size: 18px;
+      }
+      .tg {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 0;
+        border-bottom: 1px solid var(--ln);
+      }
+      .tog {
+        width: 44px;
+        height: 26px;
+        border-radius: 99px;
+        background: var(--ln);
+        border: 0;
+        position: relative;
+      }
+      .tog[aria-pressed="true"] {
+        background: var(--g);
+      }
+      .tog::after {
+        content: "";
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #fff;
+        transition: left 0.15s;
+      }
+      .tog[aria-pressed="true"]::after {
+        left: 21px;
+      }
+      .toast {
+        position: fixed;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--tx);
+        color: var(--bg);
+        padding: 10px 18px;
+        border-radius: 8px;
+        display: none;
+        z-index: 9;
+      }
+      textarea {
+        background: var(--sf);
+        border: 1px solid var(--ln);
+        border-radius: 8px;
+        padding: 10px 12px;
+        width: 100%;
+        min-height: 80px;
+        resize: vertical;
+      }
+      .fm {
+        display: grid;
+        gap: 16px;
+      }
+      .row {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .chip {
+        border: 1px solid var(--ln);
+        background: var(--sf);
+        border-radius: 99px;
+        padding: 6px 14px;
+      }
+      .chip[aria-pressed="true"] {
+        border-color: var(--g);
+        background: var(--sf2);
+        font-weight: 600;
+      }
+      .mo {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: none;
+        place-items: center;
+        z-index: 8;
+        padding: 16px;
+      }
+      .mo.on {
+        display: grid;
+      }
+      .mb {
+        background: var(--sf);
+        border: 1px solid var(--ln);
+        border-radius: 14px;
+        padding: 24px;
+        width: 480px;
+        max-width: 100%;
+        max-height: 90vh;
+        overflow: auto;
+      }
+      .phone {
+        position: relative;
+        overflow: hidden;
+      }
+      .sbd {
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.45);
+        display: none;
+      }
+      .sheet {
+        z-index: 2;
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: var(--sf);
+        border-radius: 20px 20px 0 0;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        transform: translateY(105%);
+        transition: transform 0.25s;
+      }
+      .sheet.on {
+        transform: none;
+      }
+      .sheet.on + .sbd {
+        display: block;
+      }
+      .rc {
+        background: var(--sf2);
+        border: 1px solid var(--ln);
+        border-radius: 12px;
+        padding: 16px 8px;
+        text-align: center;
+        font-weight: 500;
+      }
+      .rc[aria-pressed="true"] {
+        border-color: var(--g);
+        box-shadow: 0 0 0 1px var(--g);
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .sheet {
+          transition: none;
+        }
+      }
+      @media (max-width: 900px) {
+        #login {
+          grid-template-columns: 1fr;
+        }
+        #login .art {
+          display: none;
+        }
+        #app {
+          grid-template-columns: 1fr;
+        }
+        nav {
+          position: static;
+          height: auto;
+          flex-direction: row;
+          overflow-x: auto;
+          padding: 8px;
+        }
+        nav .logo,
+        nav .sp {
+          display: none;
+        }
+        nav button {
+          white-space: nowrap;
+        }
+        main {
+          padding: 20px 16px;
+        }
+        .g4,
+        .g3,
+        .g2 {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+      @media (max-width: 560px) {
+        .g4,
+        .g3,
+        .g2 {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <section id="login">
+      <div class="art">
+        <b style="font-size: 20px">SmartWeather</b>
+        <p>
+          Saiba onde cuidar primeiro, antes que o mato e a chuva decidam por
+          você.
+        </p>
+        <span class="sm" style="opacity: 0.7"
+          >Áreas verdes urbanas · Clima em tempo real · Equipes em campo</span
+        >
+      </div>
+      <form onsubmit="enter(event)">
+        <h1>Entrar</h1>
+        <span class="mu">Acesse com sua conta da prefeitura ou empresa.</span>
+        <div class="seg" id="roles">
+          <button type="button" aria-pressed="true" data-r="Gestor Municipal">
+            <b>Gestor Municipal</b><br /><span class="sm mu"
+              >Painel e planejamento</span
+            >
+          </button>
+          <button
+            type="button"
+            aria-pressed="false"
+            data-r="Fiscal Operacional"
+          >
+            <b>Fiscal Operacional</b><br /><span class="sm mu"
+              >Campo e ordens</span
+            >
+          </button>
+        </div>
+        <label
+          >E-mail<input
+            type="email"
+            value="marina.souza@prefeitura.gov.br"
+            required
+        /></label>
+        <label>Senha<input type="password" value="senha1234" required /></label>
+        <button class="btn w">Entrar</button>
+      </form>
+    </section>
+
+    <div id="app">
+      <nav id="nav" aria-label="Principal"></nav>
+      <main id="main"></main>
+    </div>
+
+    <aside
+      class="drawer"
+      id="drawer"
+      aria-label="Detalhes da ordem de serviço"
+    ></aside>
+    <div class="mo" id="modal" onclick="if (event.target === this) cm();"></div>
+    <div class="toast" id="toast" role="status"></div>
+
+    <script>
+      const $ = (s) => document.querySelector(s);
+      let role = "Gestor Municipal",
+        view = "clima",
+        sec = null;
+      const NAV = [
+        ["clima", "Clima"],
+        ["mapa", "Mapa de setores"],
+        ["os", "Ordens de serviço"],
+        ["eq", "Equipamentos"],
+        ["al", "Alertas", "3"],
+        ["mob", "App de campo"],
+        ["perfil", "Meu perfil"],
+      ];
+      const toast = (t) => {
+        const e = $("#toast");
+        e.textContent = t;
+        e.style.display = "block";
+        setTimeout(() => (e.style.display = "none"), 2200);
+      };
+      document.querySelectorAll("#roles button").forEach(
+        (b) =>
+          (b.onclick = () => {
+            document
+              .querySelectorAll("#roles button")
+              .forEach((x) => x.setAttribute("aria-pressed", x == b));
+            role = b.dataset.r;
+          }),
+      );
+      function enter(e) {
+        e.preventDefault();
+        $("#login").style.display = "none";
+        $("#app").style.display = "grid";
+        go("clima");
+      }
+      function logout() {
+        $("#app").style.display = "none";
+        $("#login").style.display = "grid";
+        $("#drawer").classList.remove("on");
+      }
+      function theme() {
+        const r = document.documentElement,
+          d =
+            (r.dataset.theme ||
+              (matchMedia("(prefers-color-scheme:dark)").matches
+                ? "dark"
+                : "light")) === "dark";
+        r.dataset.theme = d ? "light" : "dark";
+        render();
+      }
+      function go(v) {
+        view = v;
+        $("#drawer").classList.remove("on");
+        render();
+      }
+      function spark(a, c = "var(--g)") {
+        const m = Math.max(...a),
+          n = Math.min(...a),
+          p = a
+            .map((v, i) => `${i * 14},${28 - ((v - n) / (m - n || 1)) * 24}`)
+            .join(" ");
+        return `<svg width="${(a.length - 1) * 14}" height="30" aria-hidden="true"><polyline points="${p}" fill="none" stroke="${c}" stroke-width="2" stroke-linecap="round"/></svg>`;
+      }
+
+      const ST = [
+        [
+          "Praça das Flores",
+          "24,5 °C",
+          "Online · há 1 min",
+          [22, 23, 24, 24, 25, 25],
+          1,
+        ],
+        [
+          "Parque Central",
+          "23,1 °C",
+          "Online · há 2 min",
+          [21, 22, 22, 23, 23, 23],
+          1,
+        ],
+        [
+          "Jardim Botânico",
+          "25,8 °C",
+          "Online · há 1 min",
+          [23, 24, 25, 26, 26, 26],
+          1,
+        ],
+        [
+          "Av. das Palmeiras",
+          "—",
+          "Offline · há 2 h",
+          [24, 24, 25, 25, 25, 25],
+          0,
+        ],
+      ];
+      const OS = [
+        [
+          "OS-1042",
+          "Parque Central",
+          "Roçagem",
+          "Em andamento",
+          "4 operadores · 2 roçadeiras Stihl",
+          "r",
+          "Alta · vence em 2d",
+          "12/10/2026",
+        ],
+        [
+          "OS-1043",
+          "Praça das Flores",
+          "Poda de árvores",
+          "Agendada",
+          "3 operadores · 1 motosserra Husqvarna",
+          "y",
+          "Média · vence em 6d",
+          "15/10/2026",
+        ],
+        [
+          "OS-1039",
+          "Av. das Palmeiras",
+          "Limpeza de canteiros",
+          "Concluída",
+          "2 operadores · 1 soprador Stihl",
+          "g",
+          "Concluída",
+          "28/09/2026",
+        ],
+        [
+          "OS-1044",
+          "Jardim Botânico",
+          "Irrigação",
+          "Aguardando chuva",
+          "2 operadores",
+          "b",
+          "Baixa · vence em 12d",
+          "21/10/2026",
+        ],
+      ];
+      const EQ = [
+        [
+          "Roçadeira FS 450",
+          "Stihl",
+          "Máquina",
+          "Alocado ao Setor Parque Central",
+          "1.240 h",
+          "Em uso",
+        ],
+        [
+          "Motosserra 372 XP",
+          "Husqvarna",
+          "Máquina",
+          "Depósito Central",
+          "860 h",
+          "Disponível",
+        ],
+        [
+          "Roçadeira #102",
+          "Stihl",
+          "Máquina",
+          "Alocado ao Setor Praça das Flores",
+          "2.310 h",
+          "Inoperante",
+        ],
+        [
+          "Soprador BR 600",
+          "Stihl",
+          "Ferramenta",
+          "Depósito Central",
+          "410 h",
+          "Disponível",
+        ],
+        [
+          "Estação Parque Central",
+          "Davis",
+          "Estação IoT",
+          "Alocado ao Setor Parque Central",
+          "🟢 Online · há 2 min",
+          "Online",
+        ],
+        [
+          "Estação Av. Palmeiras",
+          "Davis",
+          "Estação IoT",
+          "Alocado ao Setor Av. das Palmeiras",
+          "🔴 Offline · há 2 h",
+          "Offline",
+        ],
+      ];
+      const SEC = {
+        a: [
+          "Parque Central",
+          "r",
+          "🔴 Prioridade alta · 4d em atraso",
+          "12,4 ha · 24 °C · 68% umid.",
+          "⚠️ Roçadeira #102 inoperante",
+          "M60,60 L300,40 L340,170 L120,200Z",
+          [170, 120],
+        ],
+        b: [
+          "Praça das Flores",
+          "y",
+          "🟡 Prioridade média · vence em 6d",
+          "3,1 ha · 24 °C · 71% umid.",
+          "⚠️ Árvore com galho em risco",
+          "M380,50 L560,70 L540,180 L360,170Z",
+          [450, 120],
+        ],
+        c: [
+          "Jardim Botânico",
+          "g",
+          "🟢 Em dia · próxima roçagem em 12d",
+          "8,7 ha · 26 °C · 64% umid.",
+          "Sem ocorrências abertas",
+          "M150,230 L400,215 L430,330 L170,345Z",
+          [290, 280],
+        ],
+      };
+
+      const V = {
+        clima:
+          () => `<div class="hd"><div><h1>Clima</h1><span class="mu">Atualizado há 1 minuto · 4 estações</span></div><button class="btn o" onclick="toast('Chuva simulada em todas as estações')">Simular chuva</button></div>
+<div class="grid g4" style="margin-bottom:16px">${[
+            ["Temperatura média", "24,5 °C", "↑ 1,2° vs. ontem"],
+            ["Umidade relativa", "68%", "Estável"],
+            ["Chuva acumulada", "12,4 mm", "Últimas 24 h"],
+            ["Vento", "14 km/h", "Rajadas de 22 km/h"],
+          ]
+            .map(
+              (k) =>
+                `<div class="card kpi"><span class="mu">${k[0]}</span><b>${k[1]}</b><span class="sm mu">${k[2]}</span></div>`,
+            )
+            .join("")}</div>
+<div class="grid g2">${ST.map(
+            (
+              s,
+            ) => `<div class="card"><div style="display:flex;justify-content:space-between"><h2>${s[0]}</h2><span class="pill ${s[4] ? "g" : "r"}">${s[4] ? "🟢" : "🔴"} ${s[2]}</span></div>
+<div style="display:flex;justify-content:space-between;align-items:end;margin:16px 0"><b style="font-size:26px">${s[1]}</b>${spark(s[3], s[4] ? "var(--g)" : "var(--mu)")}</div>
+<button class="btn o" ${s[4] ? "" : 'disabled style="opacity:.5"'} onclick="toast('Chuva simulada: ${s[0]}')">Simular chuva</button></div>`,
+          ).join("")}</div>`,
+
+        mapa: () => `<div class="hd"><div><h1>Mapa de setores</h1><span class="mu">Clique em um setor para ver ocorrências e emitir ordem.</span></div></div>
+<div class="map"><svg viewBox="0 0 620 380" role="img" aria-label="Mapa dos setores">
+${Object.entries(SEC)
+  .map(
+    ([k, s]) =>
+      `<path class="poly ${s[1]} ${sec == k ? "sel" : ""}" d="${s[5]}" onclick="sec='${k}';render()" tabindex="0" onkeydown="if(event.key==='Enter'){sec='${k}';render()}"/><text class="lbl" x="${s[6][0]}" y="${s[6][1]}" text-anchor="middle">${s[0]}</text>`,
+  )
+  .join("")}
+<circle cx="520" cy="300" r="6" fill="var(--b)"/><text class="lbl" x="530" y="304">Estação Av. Palmeiras</text></svg>
+<div class="pop ${sec ? "on" : ""}">${
+          sec
+            ? ((
+                s,
+              ) => `<div><h2>${s[0]}</h2><div style="margin:8px 0"><span class="pill ${s[1]}">${s[2]}</span></div><span class="sm mu">${s[3]}</span></div>
+<div class="occ">${s[4]}</div><button class="btn w" onclick="newOS('${s[0]}')">+ Emitir Ordem de Serviço</button>`)(
+                SEC[sec],
+              )
+            : ""
+        }</div></div>`,
+
+        os: () => `<div class="hd"><h1>Ordens de serviço</h1><button class="btn" onclick="newOS()">+ Nova ordem</button></div>
+<div class="card tw" style="padding:6px"><table><tr><th>ID / Setor<th>Serviço<th>Status<th>Recursos alocados<th>Prioridade<th>Agendada<th></tr>
+${OS.map((o, i) => `<tr><td><b>${o[0]}</b><br><span class="sm mu">${o[1]}</span><td>${o[2]}<td><span class="pill">${o[3]}</span><td>${o[4]}<td><span class="pill ${o[5]}">${{ r: "🔴", y: "🟡", g: "🟢", b: "🔵" }[o[5]]} ${o[6]}</span><td>${o[7]}<td><button class="btn o" onclick="openOS(${i})">Ver detalhes</button></tr>`).join("")}</table></div>`,
+
+        eq: () => `<div class="hd"><h1>Equipamentos e ativos</h1><button class="btn" onclick="newEq()">+ Novo ativo</button></div>
+<div class="flt">${[
+          ["Marca", ["Todas", "Stihl", "Husqvarna", "Davis"]],
+          ["Tipo", ["Todos", "Máquina", "Ferramenta", "Estação IoT"]],
+          ["Status", ["Todos", "Em uso", "Disponível", "Inoperante"]],
+        ]
+          .map(
+            (f) =>
+              `<label class="sm mu">${f[0]}<select>${f[1].map((o) => `<option>${o}`).join("")}</select></label>`,
+          )
+          .join("")}</div>
+<div class="card tw" style="padding:6px"><table><tr><th>Ativo<th>Marca<th>Tipo<th>Localização<th>Horímetro / Sinal<th>Status</tr>
+${EQ.map((e) => `<tr><td><b>${e[0]}</b><td>${e[1]}<td>${e[2]}<td>${e[3]}<td>${e[4]}<td><span class="pill ${e[5] == "Inoperante" || e[5] == "Offline" ? "r" : e[5] == "Disponível" ? "b" : "g"}">${e[5]}</span></tr>`).join("")}</table></div>`,
+
+        al: () =>
+          `<div class="hd"><h1>Alertas</h1></div><div class="grid">${[
+            [
+              "b",
+              "🌧️",
+              "Ajuste climático",
+              "Chuva intensa prevista para amanhã. Reagendar 2 serviços de roçagem?",
+              "Reagendar",
+              "reag()",
+            ],
+            [
+              "r",
+              "🛠️",
+              "Equipamento inoperante",
+              "Roçadeira #102 parou na Praça das Flores. Há 1 roçadeira livre no Depósito Central.",
+              "Realocar",
+              "real()",
+            ],
+            [
+              "y",
+              "⏰",
+              "Prazo de manutenção",
+              "Parque Central está 4 dias atrasado para roçagem.",
+              "Emitir ordem",
+              "newOS('Parque Central','Roçagem')",
+            ],
+          ]
+            .map(
+              (a) =>
+                `<div class="card" style="display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap"><div style="display:flex;gap:14px"><span style="font-size:24px">${a[1]}</span><div><span class="pill ${a[0]}">${a[2]}</span><p style="margin-top:6px;max-width:60ch">${a[3]}</p></div></div><button class="btn" onclick="${a[5]}">${a[4]}</button></div>`,
+            )
+            .join("")}</div>`,
+
+        perfil:
+          () => `<div class="hd"><h1>Meu perfil</h1></div><div class="grid g2"><div class="card"><h2>Dados da conta</h2><p style="margin-top:12px"><b>Marina Souza</b><br><span class="mu">marina.souza@prefeitura.gov.br</span></p><p style="margin-top:8px"><span class="pill g">${role}</span></p></div>
+<div class="card"><h2>Preferências</h2><div class="tg"><span>Tema escuro</span><button class="tog" aria-label="Alternar tema escuro" aria-pressed="${document.documentElement.dataset.theme === "dark"}" onclick="theme()"></button></div><div class="tg"><span>Notificações de alertas</span><button class="tog" aria-label="Notificações" aria-pressed="true" onclick="this.setAttribute('aria-pressed',this.getAttribute('aria-pressed')!=='true')"></button></div>
+<button class="btn o" style="margin-top:18px;color:var(--r);border-color:var(--r)" onclick="logout()">Sair</button></div></div>`,
+
+        mob: () => `<div class="hd"><div><h1>App de campo</h1><span class="mu">Visão do operador no celular</span></div></div>
+<div class="phone"><div class="card" style="padding:16px"><span class="pill r">🔴 Alta · vence em 2d</span><h2 style="margin-top:8px">OS-1042 · Roçagem</h2><span class="mu sm">Parque Central · Entrada pela Av. Brasil</span></div>
+<div class="grid g2" style="gap:10px"><div class="up">📷<br>Foto antes</div><div class="up">📷<br>Foto depois</div></div>
+<label>Duração do serviço<input value="3 h 30 min"></label>
+${[
+  ["Operadores", 4],
+  ["Equipamentos", 2],
+]
+  .map(
+    (s) =>
+      `<div class="stp"><span>${s[0]}</span><span style="display:flex;gap:10px;align-items:center"><button aria-label="Diminuir" onclick="st(this,-1)">−</button><b>${s[1]}</b><button aria-label="Aumentar" onclick="st(this,1)">+</button></span></div>`,
+  )
+  .join("")}
+<button class="btn o w" onclick="$('#sheet').classList.add('on')">Reportar ocorrência</button><button class="btn w" onclick="toast('Serviço finalizado')">Finalizar serviço</button>${sheet()}</div>`,
+      };
+      function st(b, d) {
+        const e = b.parentNode.querySelector("b");
+        e.textContent = Math.max(0, +e.textContent + d);
+      }
+      function openOS(i) {
+        const o = OS[i];
+        $("#drawer").innerHTML =
+          `<div style="display:flex;justify-content:space-between"><div><h2>${o[0]} · ${o[2]}</h2><span class="mu">${o[1]}</span></div><button class="btn o" onclick="$('#drawer').classList.remove('on')" aria-label="Fechar">✕</button></div>
+<div class="grid g2" style="gap:10px"><div><div class="ph">Foto antes</div></div><div><div class="ph">Foto depois</div></div></div>
+<div><h2>Recursos utilizados</h2><p class="mu">${o[4]}</p></div>
+<div><h2>Histórico de ocorrências</h2><div class="occ" style="margin-top:8px">⚠️ Roçadeira #102 inoperante · 09/10</div><div class="occ" style="margin-top:8px">Chuva interrompeu o serviço por 1 h · 07/10</div></div>`;
+        $("#drawer").classList.add("on");
+      }
+
+      const SETS = [
+        "Parque Central",
+        "Praça das Flores",
+        "Jardim Botânico",
+        "Av. das Palmeiras",
+      ];
+      const opt = (a, v, ph) =>
+        (ph ? `<option value="">${ph}</option>` : "") +
+        a
+          .map((x) => `<option ${x === v ? "selected" : ""}>${x}</option>`)
+          .join("");
+      const tp = (b) =>
+        b.setAttribute(
+          "aria-pressed",
+          b.getAttribute("aria-pressed") !== "true",
+        );
+      const pp = (b) =>
+        b.parentNode
+          .querySelectorAll("button")
+          .forEach((x) => x.setAttribute("aria-pressed", x == b));
+      function cm() {
+        $("#modal").classList.remove("on");
+      }
+      function mdl(h) {
+        $("#modal").innerHTML =
+          `<div class="mb" role="dialog" aria-modal="true">${h}</div>`;
+        $("#modal").classList.add("on");
+      }
+      function newOS(sv = "", tv = "") {
+        drw(`<div style="display:flex;justify-content:space-between"><h2>Nova ordem de serviço</h2><button class="btn o" aria-label="Fechar" onclick="$('#drawer').classList.remove('on')">✕</button></div>
+<div class="fm"><label>Setor<select>${opt(SETS, sv, "Selecione o setor")}</select></label>
+<label>Tipo de serviço<select>${opt(["Roçagem", "Poda", "Limpeza", "Irrigação"], tv, "Selecione o tipo")}</select></label>
+<label>Data prevista<input type="date" value="2026-10-12"></label>
+<div><span style="font-weight:500">Prioridade</span><div class="row" style="margin-top:4px">${["Alta", "Média", "Baixa"].map((p, i) => `<button class="chip" aria-pressed="${i == 0}" onclick="pp(this)">${{ Alta: "🔴", Média: "🟡", Baixa: "🟢" }[p]} ${p}</button>`).join("")}</div></div>
+<div class="stp"><span>Operadores</span><span style="display:flex;gap:10px;align-items:center"><button aria-label="Diminuir" onclick="st(this,-1)">−</button><b>3</b><button aria-label="Aumentar" onclick="st(this,1)">+</button></span></div>
+<div><span style="font-weight:500">Equipamentos</span><div class="row" style="margin-top:4px">${["Roçadeira FS 450 · Stihl", "Roçadeira FS 55 · Stihl", "Motosserra 372 XP · Husqvarna", "Soprador BR 600 · Stihl"].map((e) => `<button class="chip" aria-pressed="false" onclick="tp(this)">${e}</button>`).join("")}</div></div>
+<label>Instruções<textarea placeholder="Ex.: começar pela área da entrada principal"></textarea></label>
+<button class="btn w" onclick="$('#drawer').classList.remove('on');toast('Ordem de serviço emitida')">Confirmar e Emitir OS</button></div>`);
+      }
+      function drw(h) {
+        $("#drawer").innerHTML = h;
+        $("#drawer").classList.add("on");
+      }
+      function eqProp(v) {
+        $("#pf").innerHTML =
+          v === "Próprio (Prefeitura)"
+            ? '<label>Nº de patrimônio<input id="eqp" placeholder="Ex.: 004512"></label>'
+            : '<label>ID de frota / contrato<input id="eqp" placeholder="Ex.: CORP-2026-018"></label>';
+      }
+      function newEq() {
+        mdl(`<div class="hd" style="margin-bottom:12px"><h2>Novo ativo</h2><button class="btn o" aria-label="Fechar" onclick="cm()">✕</button></div>
+<div class="fm"><label>Nome do ativo<input id="eqn" placeholder="Ex.: Roçadeira FS 450"></label>
+<div><span style="font-weight:500">Tipo</span><div class="seg" style="margin-top:4px"><button type="button" class="chip" aria-pressed="true" onclick="pp(this)">Máquina / Ferramenta</button><button type="button" class="chip" aria-pressed="false" onclick="pp(this)">Estação IoT</button></div></div>
+<label>Marca / modelo<input id="eqb" placeholder="Ex.: Stihl FS 450"></label>
+<label>Propriedade<select onchange="eqProp(this.value)"><option>Próprio (Prefeitura)</option><option>Terceirizado (Corpus)</option></select></label>
+<div id="pf"></div>
+<label>Número de série<input placeholder="Ex.: 98234710"></label>
+<label>Localização inicial<select>${opt(["Depósito Central", ...SETS.map((x) => "Setor " + x)])}</select></label>
+<button class="btn w" onclick="saveEq()">Salvar ativo</button></div>`);
+        eqProp("Próprio (Prefeitura)");
+      }
+      function saveEq() {
+        const n = $("#eqn").value || "Novo ativo",
+          b = $("#eqb").value.split(" ")[0] || "—";
+        EQ.unshift([n, b, "Máquina", "Depósito Central", "0 h", "Disponível"]);
+        cm();
+        if (view === "eq") render();
+        toast("Ativo salvo");
+      }
+      function reag() {
+        mdl(`<div class="hd" style="margin-bottom:12px"><div><h2>Reagendar por chuva</h2><span class="sm mu">Chuva intensa prevista amanhã. Escolha novas datas.</span></div><button class="btn o" aria-label="Fechar" onclick="cm()">✕</button></div>
+<div class="fm">${[
+          ["OS-1042 · Roçagem", "Parque Central", "2026-10-14"],
+          ["OS-1043 · Poda de árvores", "Praça das Flores", "2026-10-16"],
+        ]
+          .map(
+            (o) =>
+              `<div class="occ"><b>${o[0]}</b><br><span class="sm mu">${o[1]}</span><label style="margin-top:8px">Nova data<input type="date" value="${o[2]}"></label></div>`,
+          )
+          .join("")}
+<button class="btn w" onclick="cm();toast('2 ordens reagendadas')">Confirmar novas datas</button></div>`);
+      }
+      function real() {
+        mdl(`<div class="hd" style="margin-bottom:12px"><div><h2>Substituir Roçadeira #102</h2><span class="sm mu">Disponíveis no Depósito Central</span></div><button class="btn o" aria-label="Fechar" onclick="cm()">✕</button></div>
+<div class="fm"><div class="grid" style="gap:8px">${["Roçadeira FS 55 · Stihl · 640 h", "Motosserra 372 XP · Husqvarna · 860 h", "Soprador BR 600 · Stihl · 410 h"].map((e, i) => `<button class="chip" style="border-radius:10px;text-align:left;padding:12px" aria-pressed="${i == 0}" onclick="pp(this)">${e}</button>`).join("")}</div>
+<button class="btn w" onclick="cm();toast('Equipamento realocado para Praça das Flores')">Confirmar substituição</button></div>`);
+      }
+      function sheet() {
+        return `<div class="sheet" id="sheet" role="dialog" aria-label="Reportar ocorrência"><div style="display:flex;justify-content:space-between;align-items:center"><h2>O que aconteceu?</h2><button class="stp" style="padding:4px 12px" aria-label="Fechar" onclick="$('#sheet').classList.remove('on')">✕</button></div>
+<div class="grid g2" style="gap:10px">${[
+          ["🛠️", "Equipamento quebrado"],
+          ["🌧️", "Chuva"],
+          ["👥", "Falta de pessoal"],
+          ["🚧", "Obstrução"],
+        ]
+          .map(
+            (r, i) =>
+              `<button class="rc" aria-pressed="${i == 0}" onclick="pp(this)"><div style="font-size:24px">${r[0]}</div>${r[1]}</button>`,
+          )
+          .join("")}</div>
+<div class="up" style="aspect-ratio:3/1">📷 Adicionar foto</div>
+<button class="btn w" onclick="$('#sheet').classList.remove('on');toast('Relato enviado')">Enviar relato</button></div><div class="sbd" onclick="$('#sheet').classList.remove('on')"></div>`;
+      }
+      function render() {
+        $("#nav").innerHTML =
+          `<div class="logo"><span style="color:var(--g)">●</span> SmartWeather</div>` +
+          NAV.map(
+            (n) =>
+              `<button class="${view == n[0] ? "on" : ""}" onclick="go('${n[0]}')">${n[1]}${n[2] ? `<span class="pill r">${n[2]}</span>` : ""}</button>`,
+          ).join("") +
+          `<div class="sp"></div><button onclick="logout()">Sair</button>`;
+        $("#main").innerHTML = V[view]();
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,153 @@
+openapi: 3.1.0
+info:
+  title: SmartWeather API
+  version: 0.1.0
+  description: |
+    Contrato HTTP do monolito Flask + React.
+    Este arquivo é **a fonte da verdade** do contrato. O backend obedece a
+    ele; o frontend gera seu cliente a partir dele. Qualquer mudança precisa
+    ser refletida no `plan.md` da feature correspondente e registrada em
+    `Desvios do plano` no `report.md`.
+  contact:
+    name: Time SmartWeather
+servers:
+  - url: http://localhost:5000
+    description: Desenvolvimento local (Flask)
+  - url: http://localhost:8000
+    description: Produção local (docker compose)
+tags:
+  - name: health
+    description: Verificação de saúde da aplicação.
+  - name: users
+    description: Cadastro e gestão de usuários.
+
+paths:
+  /api/health:
+    get:
+      tags: [health]
+      summary: Liveness probe
+      description: Retorna 200 quando a aplicação está pronta para receber tráfego.
+      operationId: getHealth
+      responses:
+        "200":
+          description: Aplicação saudável.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Health"
+
+  /api/users:
+    post:
+      tags: [users]
+      summary: Cadastra um novo usuário
+      description: |
+        Cria um usuário e o autentica imediatamente (cookie de sessão
+        httpOnly é devolvido no header `Set-Cookie`).
+      operationId: createUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserCreate"
+      responses:
+        "201":
+          description: Usuário criado e autenticado.
+          headers:
+            Set-Cookie:
+              description: Cookie de sessão httpOnly.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "409":
+          description: E-mail já cadastrado.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "422":
+          description: Erro de validação (campo a campo).
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+components:
+  schemas:
+    Health:
+      type: object
+      required: [status, version]
+      properties:
+        status:
+          type: string
+          enum: [ok]
+        version:
+          type: string
+          description: Versão da aplicação (refletida em `openapi.yaml info.version`).
+      example:
+        status: ok
+        version: 0.1.0
+
+    UserCreate:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          format: email
+          maxLength: 255
+          description: E-mail único por usuário.
+        password:
+          type: string
+          minLength: 8
+          maxLength: 128
+          format: password
+          description: Senha em texto puro. Validada apenas no transporte (HTTPS).
+
+    User:
+      type: object
+      required: [id, email, created_at]
+      properties:
+        id:
+          type: integer
+          format: int64
+          minimum: 1
+        email:
+          type: string
+          format: email
+        created_at:
+          type: string
+          format: date-time
+      example:
+        id: 1
+        email: "alice@books.example"
+        created_at: "2025-01-15T12:00:00Z"
+
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string
+          description: Mensagem legível para humanos.
+        details:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Detalhes por campo (presente principalmente em 422).
+      example:
+        error: validation_error
+        details:
+          password: ["must be at least 8 characters long"]
+
+  securitySchemes:
+    SessionCookie:
+      type: apiKey
+      in: cookie
+      name: session
+      description: Cookie httpOnly emitido pelo backend após login/cadastro.
