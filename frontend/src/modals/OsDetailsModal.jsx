@@ -1,18 +1,15 @@
 import { useUi } from "../context/useUi.js";
 
-function OsDetailsDrawer({ os }) {
-  const { closeDrawer } = useUi();
+function OsDetailsModal({ os }) {
+  const { closeModal } = useUi();
 
   if (!os) return null;
 
   return (
     <>
       <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "flex-start",
-        }}
+        className="hd"
+        style={{ marginBottom: 12, alignItems: "flex-start" }}
       >
         <div>
           <h2>
@@ -20,23 +17,19 @@ function OsDetailsDrawer({ os }) {
           </h2>
           <span className="mu">{os.setor}</span>
         </div>
-        <button className="btn o" aria-label="Fechar" onClick={closeDrawer}>
+        <button className="btn o" aria-label="Fechar" onClick={closeModal}>
           ✕
         </button>
       </div>
       <div className="grid g2" style={{ gap: 10 }}>
-        <div>
-          <div className="ph">Foto antes</div>
-        </div>
-        <div>
-          <div className="ph">Foto depois</div>
-        </div>
+        <div className="ph">Foto antes</div>
+        <div className="ph">Foto depois</div>
       </div>
-      <div>
+      <div style={{ marginTop: 18 }}>
         <h2>Recursos utilizados</h2>
         <p className="mu">{os.recursos}</p>
       </div>
-      <div>
+      <div style={{ marginTop: 18 }}>
         <h2>Histórico de ocorrências</h2>
         <div className="occ" style={{ marginTop: 8 }}>
           ⚠️ Roçadeira #102 inoperante · 09/10
@@ -49,4 +42,4 @@ function OsDetailsDrawer({ os }) {
   );
 }
 
-export default OsDetailsDrawer;
+export default OsDetailsModal;

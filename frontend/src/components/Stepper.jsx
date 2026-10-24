@@ -6,13 +6,13 @@ function Stepper({ label, value, onChange, min = 0, step = 1 }) {
     <div className="stp">
       <span>{label}</span>
       <span style={{ display: "flex", gap: 10, alignItems: "center" }}>
-        <button type="button" aria-label="Diminuir" onClick={dec}>
+        <div className="increase" aria-label="Diminuir" onClick={dec}>
           −
-        </button>
+        </div>
         <b>{value}</b>
-        <button type="button" aria-label="Aumentar" onClick={inc}>
+        <div className="decrease" aria-label="Aumentar" onClick={inc}>
           +
-        </button>
+        </div>
       </span>
     </div>
   );

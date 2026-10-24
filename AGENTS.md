@@ -100,7 +100,7 @@ make new-feature name=002-minha-feature
 - Backend: services para regra de negócio; blueprints só orquestram.
 - Frontend: hooks com prefixo `use`; componentes `PascalCase`.
 - Mensagens de commit: inglês, descritivas (`feat(users): add password
-  min length validation`).
+min length validation`).
 - Docstrings: inglês no código, português nas specs.
 
 ## 6. O que **NÃO** fazer
@@ -114,6 +114,8 @@ make new-feature name=002-minha-feature
   rodar verde.
 - ❌ Inventar comandos que não estão no `Makefile` ou nos arquivos de
   workflow — se precisar, adicione ao `Makefile` antes.
+- ❌ Instalar pacotes/libs sem permissão.
+- ❌ Mânter arquivos de teste/smoke (após criá-lo e executá-lo realize sua exclusão).
 
 ## 7. Quando ficar bloqueado
 

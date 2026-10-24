@@ -30,7 +30,7 @@ function StationCard({ station, onSimulate }) {
         className="btn o"
         disabled={!online}
         style={!online ? { opacity: 0.5 } : undefined}
-        onClick={() => onSimulate && onSimulate(nome)}
+        onClick={() => onSimulate && onSimulate(station)}
       >
         Simular chuva
       </button>

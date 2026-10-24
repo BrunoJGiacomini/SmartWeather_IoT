@@ -2,47 +2,23 @@ import Pill from "../components/Pill.jsx";
 import { useUi } from "../context/useUi.js";
 import RescheduleModal from "../modals/RescheduleModal.jsx";
 import ReallocateModal from "../modals/ReallocateModal.jsx";
-import NewOsDrawer from "../drawers/NewOsDrawer.jsx";
-
-const ALERTAS = [
-  {
-    cor: "b",
-    icon: "🌧️",
-    title: "Ajuste climático",
-    description:
-      "Chuva intensa prevista para amanhã. Reagendar 2 serviços de roçagem?",
-    buttonLabel: "Reagendar",
-    action: "reschedule",
-  },
-  {
-    cor: "r",
-    icon: "🛠️",
-    title: "Equipamento inoperante",
-    description:
-      "Roçadeira #102 parou na Praça das Flores. Há 1 roçadeira livre no Depósito Central.",
-    buttonLabel: "Realocar",
-    action: "reallocate",
-  },
-  {
-    cor: "y",
-    icon: "⏰",
-    title: "Prazo de manutenção",
-    description: "Parque Central está 4 dias atrasado para roçagem.",
-    buttonLabel: "Emitir ordem",
-    action: "newOs",
-  },
-];
+import NewOsModal from "../modals/NewOsModal.jsx";
+import OsDetailsModal from "../modals/OsDetailsModal.jsx";
 
 function AlertasPage() {
-  const { openModal, openDrawer } = useUi();
+  const { alerts, openModal, serviceOrders } = useUi();
 
-  const handleAction = (action) => {
-    if (action === "reschedule") openModal(<RescheduleModal />);
-    else if (action === "reallocate") openModal(<ReallocateModal />);
-    else if (action === "newOs")
-      openDrawer(
-        <NewOsDrawer initialSetor="Parque Central" initialServico="Roçagem" />,
+  const handleAction = (alert) => {
+    if (alert.action === "reschedule") openModal(<RescheduleModal />);
+    else if (alert.action === "reallocate") openModal(<ReallocateModal />);
+    else if (alert.action === "newOs")
+      openModal(
+        <NewOsModal initialSetor="Parque Central" initialServico="Roçagem" />,
       );
+    else if (alert.action === "viewOs") {
+      const os = serviceOrders.find((o) => o.id === alert.osId);
+      if (os) openModal(<OsDetailsModal os={os} />);
+    }
   };
 
   return (
@@ -51,9 +27,9 @@ function AlertasPage() {
         <h1>Alertas</h1>
       </div>
       <div className="grid">
-        {ALERTAS.map((a) => (
+        {alerts.map((a) => (
           <div
-            key={a.title}
+            key={a.id}
             className="card"
             style={{
               display: "flex",
@@ -70,9 +46,12 @@ function AlertasPage() {
                 <p style={{ marginTop: 6, maxWidth: "60ch" }}>
                   {a.description}
                 </p>
+                {a.registradoEm && (
+                  <span className="sm mu">Registrado em {a.registradoEm}</span>
+                )}
               </div>
             </div>
-            <button className="btn" onClick={() => handleAction(a.action)}>
+            <button className="btn" onClick={() => handleAction(a)}>
               {a.buttonLabel}
             </button>
           </div>

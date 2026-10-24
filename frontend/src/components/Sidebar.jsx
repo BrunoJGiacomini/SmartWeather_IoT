@@ -1,18 +1,20 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/useAuth.js";
+import { useUi } from "../context/useUi.js";
 
 const NAV_ITEMS = [
   { to: "/clima", label: "Clima" },
   { to: "/mapa", label: "Mapa de setores" },
   { to: "/os", label: "Ordens de serviço" },
   { to: "/equipamentos", label: "Equipamentos" },
-  { to: "/alertas", label: "Alertas", badge: "3" },
+  { to: "/alertas", label: "Alertas", badge: true },
   { to: "/app-campo", label: "App de campo" },
   { to: "/perfil", label: "Meu perfil" },
 ];
 
 function Sidebar() {
   const { logout } = useAuth();
+  const { alerts } = useUi();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -32,7 +34,7 @@ function Sidebar() {
           className={({ isActive }) => (isActive ? "on" : "")}
         >
           {item.label}
-          {item.badge && <span className="pill r">{item.badge}</span>}
+          {item.badge && <span className="pill r">{alerts.length}</span>}
         </NavLink>
       ))}
       <div className="sp"></div>

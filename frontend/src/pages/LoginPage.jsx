@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/useAuth.js";
 
 const ROLES = [
@@ -17,8 +17,14 @@ const ROLES = [
 
 function LoginPage() {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { isAuthenticated, login } = useAuth();
   const [role, setRole] = useState("Gestor Municipal");
+
+  // An authenticated visitor landing on the login URL (or reloading it) goes
+  // straight back to the app instead of seeing the login form again.
+  if (isAuthenticated) {
+    return <Navigate to="/clima" replace />;
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();

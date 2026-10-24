@@ -1,9 +1,21 @@
 import { useEffect, useState, useMemo } from "react";
 import { AuthContext } from "./authContextObject.js";
+import { clearSession, readSession, writeSession } from "./authSession.js";
+import { readThemePreference, writeThemePreference } from "./themePreference.js";
 
 const DEFAULT_ROLE = "Gestor Municipal";
 
+function getInitialSession() {
+  const stored = readSession();
+  return {
+    isAuthenticated: Boolean(stored),
+    role: stored?.role || DEFAULT_ROLE,
+  };
+}
+
 function getInitialTheme() {
+  const preference = readThemePreference();
+  if (preference === "dark" || preference === "light") return preference;
   if (typeof document === "undefined") return "light";
   const attr = document.documentElement.getAttribute("data-theme");
   if (attr === "dark" || attr === "light") return attr;
@@ -18,26 +30,29 @@ function getInitialTheme() {
 }
 
 export function AuthProvider({ children }) {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [role, setRole] = useState(DEFAULT_ROLE);
+  const [session, setSession] = useState(getInitialSession);
   const [theme, setTheme] = useState(getInitialTheme);
+  const { isAuthenticated, role } = session;
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
   }, [theme]);
 
   const login = (selectedRole) => {
-    if (selectedRole) setRole(selectedRole);
-    setIsAuthenticated(true);
+    const nextRole = selectedRole || role || DEFAULT_ROLE;
+    writeSession(nextRole);
+    setSession({ isAuthenticated: true, role: nextRole });
   };
 
   const logout = () => {
-    setIsAuthenticated(false);
-    setRole(DEFAULT_ROLE);
+    clearSession();
+    setSession({ isAuthenticated: false, role: DEFAULT_ROLE });
   };
 
   const toggleTheme = () => {
-    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
+    const next = theme === "dark" ? "light" : "dark";
+    writeThemePreference(next);
+    setTheme(next);
   };
 
   const value = useMemo(

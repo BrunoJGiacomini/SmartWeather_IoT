@@ -2,14 +2,14 @@ import MapView from "../components/MapView.jsx";
 import SectorPopup from "../components/SectorPopup.jsx";
 import { useUi } from "../context/useUi.js";
 import { SECTORS } from "../mocks/sectors.js";
-import NewOsDrawer from "../drawers/NewOsDrawer.jsx";
+import NewOsModal from "../modals/NewOsModal.jsx";
 
 function MapaPage() {
   const {
     selectedSectorId,
     setSelectedSectorId,
     selectedSector,
-    openDrawer,
+    openModal,
   } = useUi();
 
   const handleSelectSector = (id) => {
@@ -17,7 +17,7 @@ function MapaPage() {
   };
 
   const handleEmitOs = (setorNome) => {
-    openDrawer(<NewOsDrawer initialSetor={setorNome} />);
+    openModal(<NewOsModal initialSetor={setorNome} />);
   };
 
   return (
