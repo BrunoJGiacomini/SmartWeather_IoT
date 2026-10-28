@@ -1,7 +1,7 @@
 export const STATIONS = [
   {
-    nome: "Praça das Flores",
-    setor: "Praça das Flores",
+    nome: "Parque das Frutas",
+    setor: "Parque das Frutas",
     temperatura: "24,5 °C",
     status: "Online · há 1 min",
     sparkData: [22, 23, 24, 24, 25, 25],
@@ -16,8 +16,8 @@ export const STATIONS = [
     },
   },
   {
-    nome: "Parque Central",
-    setor: "Parque Central",
+    nome: "Parque do Mirim",
+    setor: "Parque do Mirim",
     temperatura: "23,1 °C",
     status: "Online · há 2 min",
     sparkData: [21, 22, 22, 23, 23, 23],
@@ -25,15 +25,15 @@ export const STATIONS = [
     simulacao: {
       os: "OS-1042",
       servico: "Roçagem",
-      statusOs: "Em andamento",
+      statusOs: "Agendada",
       prazo: "12/10/2026",
-      tempoExtra: "1 h 15 min",
+      tempoExtra: "96 h (4 dias)",
       registradoEm: "23/10/2026 · 14:33",
     },
   },
   {
-    nome: "Jardim Botânico",
-    setor: "Jardim Botânico",
+    nome: "Praça da Liberdade",
+    setor: "Praça da Liberdade",
     temperatura: "25,8 °C",
     status: "Online · há 1 min",
     sparkData: [23, 24, 25, 26, 26, 26],
@@ -48,8 +48,8 @@ export const STATIONS = [
     },
   },
   {
-    nome: "Av. das Palmeiras",
-    setor: "Av. das Palmeiras",
+    nome: "Parque da Criança",
+    setor: "Parque da Criança",
     temperatura: "—",
     status: "Offline · há 2 h",
     sparkData: [24, 24, 25, 25, 25, 25],

@@ -8,10 +8,10 @@ const PROPRIEDADES = ["Próprio (Prefeitura)", "Terceirizado (Corpus)"];
 
 const LOCALIZACOES = [
   "Depósito Central",
-  "Setor Parque Central",
-  "Setor Praça das Flores",
-  "Setor Jardim Botânico",
-  "Setor Av. das Palmeiras",
+  "Setor Parque do Mirim",
+  "Setor Parque das Frutas",
+  "Setor Praça da Liberdade",
+  "Setor Parque da Criança",
 ];
 
 function NewEquipmentModal() {
@@ -27,7 +27,7 @@ function NewEquipmentModal() {
   const handleSave = () => {
     const novo = {
       nome: nome.trim() || "Novo ativo",
-      marca: (marca.trim().split(" ")[0]) || "—",
+      marca: marca.trim().split(" ")[0] || "—",
       tipo: "Máquina",
       localizacao: "Depósito Central",
       horimetro: "0 h",

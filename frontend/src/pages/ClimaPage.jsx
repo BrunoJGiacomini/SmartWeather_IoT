@@ -2,7 +2,7 @@ import KpiCard from "../components/KpiCard.jsx";
 import StationCard from "../components/StationCard.jsx";
 import { useUi } from "../context/useUi.js";
 import { STATIONS } from "../mocks/stations.js";
-import { buildRainAlert } from "../mocks/alerts.js";
+import { isStationSimulated } from "../utils/rainSimulation.js";
 import RainSimulationModal from "../modals/RainSimulationModal.jsx";
 
 const KPIS = [
@@ -13,14 +13,22 @@ const KPIS = [
 ];
 
 function ClimaPage() {
-  const { openModal, addAlert } = useUi();
+  const { openModal, simulateRain, rainSimulations } = useUi();
 
-  // Registers the alert in the alerts area and shows the modal warning that
-  // the affected area needs more time to be finalized.
+  // Simulates the rain on the station: reschedules the service order when it
+  // is a scheduled mowing, registers the alert in the alerts area and shows
+  // the modal warning that the affected area needs more time to be finalized.
   const handleSimulateStation = (station) => {
     if (!station.simulacao) return;
-    addAlert(buildRainAlert(station));
-    openModal(<RainSimulationModal areas={[station]} />);
+
+    const result = simulateRain(station);
+    if (!result) return;
+
+    openModal(
+      <RainSimulationModal
+        areas={[{ ...station, simulacao: result.simulacao }]}
+      />,
+    );
   };
 
   return (
@@ -46,6 +54,7 @@ function ClimaPage() {
           <StationCard
             key={s.nome}
             station={s}
+            simulated={isStationSimulated(s, rainSimulations)}
             onSimulate={handleSimulateStation}
           />
         ))}

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useUi } from "../context/useUi.js";
 import Chip from "../components/Chip.jsx";
 import Stepper from "../components/Stepper.jsx";
@@ -30,6 +31,7 @@ const NOVA_OS = {
 
 function NewOsModal({ initialSetor = "", initialServico = "", os = null }) {
   const { closeModal, showToast, setServiceOrders } = useUi();
+  const navigate = useNavigate();
   const isEdit = Boolean(os);
 
   const [form, setForm] = useState(() =>
@@ -77,6 +79,7 @@ function NewOsModal({ initialSetor = "", initialServico = "", os = null }) {
       ),
     );
     closeModal();
+    navigate("/os");
     showToast("Ordem de serviço emitida");
   };
 

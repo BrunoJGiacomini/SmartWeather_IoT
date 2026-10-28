@@ -145,10 +145,10 @@ tempo real · Equipes em campo</span>`
     - `<button class="btn o">Simular chuva</button>` (desabilitado se
       estação estiver offline).
   - Dados das estações (mock idêntico ao HTML, com `online: 0|1`):
-    - Praça das Flores — 24,5 °C — Online · há 1 min — `[22,23,24,24,25,25]` — online=1
-    - Parque Central — 23,1 °C — Online · há 2 min — `[21,22,22,23,23,23]` — online=1
-    - Jardim Botânico — 25,8 °C — Online · há 1 min — `[23,24,25,26,26,26]` — online=1
-    - Av. das Palmeiras — "—" — Offline · há 2 h — `[24,24,25,25,25,25]` — online=0
+    - Parque das Frutas — 24,5 °C — Online · há 1 min — `[22,23,24,24,25,25]` — online=1
+    - Parque do Mirim — 23,1 °C — Online · há 2 min — `[21,22,22,23,23,23]` — online=1
+    - Praça da Liberdade — 25,8 °C — Online · há 1 min — `[23,24,25,26,26,26]` — online=1
+    - Parque da Criança — "—" — Offline · há 2 h — `[24,24,25,25,25,25]` — online=0
   - Sparkline: SVG inline (largura = `(N-1)*14`, altura 30, polyline com
     pontos normalizados entre min/max do array, stroke verde se online,
     `var(--mu)` se offline). Ver §4 Decisões para fórmula exata.
@@ -165,11 +165,11 @@ tempo real · Equipes em campo</span>`
     SVG `viewBox="0 0 620 380"`, `role="img"`, `aria-label="Mapa dos setores"`.
   - 3 polígonos (`<path class="poly cor [sel]">`) clicáveis, com `tabindex="0"`
     e `onkeydown` para Enter:
-    - **Parque Central** (cor `r`, vermelho): `d="M60,60 L300,40 L340,170 L120,200Z"`,
+    - **Parque do Mirim** (cor `r`, vermelho): `d="M60,60 L300,40 L340,170 L120,200Z"`,
       label em `x=170, y=120`.
-    - **Praça das Flores** (cor `y`, amarelo): `d="M380,50 L560,70 L540,180 L360,170Z"`,
+    - **Parque das Frutas** (cor `y`, amarelo): `d="M380,50 L560,70 L540,180 L360,170Z"`,
       label em `x=450, y=120`.
-    - **Jardim Botânico** (cor `g`, verde): `d="M150,230 L400,215 L430,330 L170,345Z"`,
+    - **Praça da Liberdade** (cor `g`, verde): `d="M150,230 L400,215 L430,330 L170,345Z"`,
       label em `x=290, y=280`.
   - Marcador da estação:
     - `<circle cx="520" cy="300" r="6" fill="var(--b)"/>`
@@ -196,16 +196,16 @@ tempo real · Equipes em campo</span>`
   - Tabela (`.card.tw`, padding 6px) com colunas:
     `ID / Setor | Serviço | Status | Recursos alocados | Prioridade | Agendada | (vazio)`.
   - 4 linhas (mock idêntico):
-    - **OS-1042** · Parque Central · Roçagem · Em andamento ·
+    - **OS-1042** · Parque do Mirim · Roçagem · Em andamento ·
       "4 operadores · 2 roçadeiras Stihl" · cor `r` (🔴) · "Alta · vence em 2d" ·
       12/10/2026
-    - **OS-1043** · Praça das Flores · Poda de árvores · Agendada ·
+    - **OS-1043** · Parque das Frutas · Poda de árvores · Agendada ·
       "3 operadores · 1 motosserra Husqvarna" · cor `y` (🟡) ·
       "Média · vence em 6d" · 15/10/2026
-    - **OS-1039** · Av. das Palmeiras · Limpeza de canteiros · Concluída ·
+    - **OS-1039** · Parque da Criança · Limpeza de canteiros · Concluída ·
       "2 operadores · 1 soprador Stihl" · cor `g` (🟢) · "Concluída" ·
       28/09/2026
-    - **OS-1044** · Jardim Botânico · Irrigação · Aguardando chuva ·
+    - **OS-1044** · Praça da Liberdade · Irrigação · Aguardando chuva ·
       "2 operadores" · cor `b` (🔵) · "Baixa · vence em 12d" · 21/10/2026
   - Última coluna de cada linha: `<button class="btn o" onclick="openOS(i)">Ver detalhes</button>`.
   - Linhas usam `<tr>` com `<td>` e `border-bottom: 1px solid var(--ln)`;
@@ -228,18 +228,18 @@ tempo real · Equipes em campo</span>`
   - Tabela (`.card.tw`, padding 6px) com colunas:
     `Ativo | Marca | Tipo | Localização | Horímetro / Sinal | Status`.
   - 6 linhas (mock idêntico):
-    - Roçadeira FS 450 / Stihl / Máquina / "Alocado ao Setor Parque Central" /
+    - Roçadeira FS 450 / Stihl / Máquina / "Alocado ao Setor Parque do Mirim" /
       "1.240 h" / "Em uso" → pill `g`
     - Motosserra 372 XP / Husqvarna / Máquina / "Depósito Central" /
       "860 h" / "Disponível" → pill `b`
-    - Roçadeira #102 / Stihl / Máquina / "Alocado ao Setor Praça das Flores" /
+    - Roçadeira #102 / Stihl / Máquina / "Alocado ao Setor Parque das Frutas" /
       "2.310 h" / "Inoperante" → pill `r`
     - Soprador BR 600 / Stihl / Ferramenta / "Depósito Central" /
       "410 h" / "Disponível" → pill `b`
-    - Estação Parque Central / Davis / Estação IoT /
-      "Alocado ao Setor Parque Central" / "🟢 Online · há 2 min" / "Online" → pill `g`
+    - Estação Parque do Mirim / Davis / Estação IoT /
+      "Alocado ao Setor Parque do Mirim" / "🟢 Online · há 2 min" / "Online" → pill `g`
     - Estação Av. Palmeiras / Davis / Estação IoT /
-      "Alocado ao Setor Av. das Palmeiras" / "🔴 Offline · há 2 h" / "Offline" → pill `r`
+      "Alocado ao Setor Parque da Criança" / "🔴 Offline · há 2 h" / "Offline" → pill `r`
   - Regra da cor do pill: `r` se status = "Inoperante" ou "Offline";
     `b` se "Disponível"; senão `g`.
 
@@ -259,11 +259,11 @@ tempo real · Equipes em campo</span>`
        Reagendar 2 serviços de roçagem?", botão "Reagendar" → abre modal
        `reag()`.
     2. cor `r`, 🛠️, "Equipamento inoperante", "Roçadeira #102 parou na
-       Praça das Flores. Há 1 roçadeira livre no Depósito Central.",
+       Parque das Frutas. Há 1 roçadeira livre no Depósito Central.",
        botão "Realocar" → abre modal `real()`.
-    3. cor `y`, ⏰, "Prazo de manutenção", "Parque Central está 4 dias
+    3. cor `y`, ⏰, "Prazo de manutenção", "Parque do Mirim está 4 dias
        atrasado para roçagem.", botão "Emitir ordem" → abre drawer
-       `newOS('Parque Central','Roçagem')`.
+       `newOS('Parque do Mirim','Roçagem')`.
 
 ### RF-09 — View `/perfil` (Meu perfil) replica o HTML
 
@@ -293,7 +293,7 @@ do operador no celular</span></div>`.
   - Dentro do phone, nesta ordem: - `<div class="card" style="padding:16px">` com:
     `<span class="pill r">🔴 Alta · vence em 2d</span>`,
     `<h2 style="margin-top:8px">OS-1042 · Roçagem</h2>`,
-    `<span class="mu sm">Parque Central · Entrada pela Av. Brasil</span>`. - Grid 2 colunas (`<div class="grid g2" style="gap:10px">`) com 2
+    `<span class="mu sm">Parque do Mirim · Entrada pela Av. Brasil</span>`. - Grid 2 colunas (`<div class="grid g2" style="gap:10px">`) com 2
     `<div class="up">📷<br>Foto antes</div>` e `<div class="up">📷<br>Foto
 depois</div>` (placeholders de upload). - `<label>Duração do serviço<input value="3 h 30 min"></label>`. - 2 steppers (`<div class="stp">`): - "Operadores" — valor 4 — botões `−` e `+` com `aria-label` "Diminuir"
     e "Aumentar". - "Equipamentos" — valor 2 — mesma estrutura. - `<button class="btn o w" onclick="abrirSheet()">Reportar ocorrência</button>`. - `<button class="btn w" onclick="toast('Serviço finalizado')">Finalizar
@@ -330,8 +330,8 @@ serviço</button>`.
 - **Então** o componente renderiza, **idêntico** ao HTML:
   - Header: `<h2>Nova ordem de serviço</h2>` + botão `✕` que fecha.
   - Form `.fm` (display grid, gap 16px): - `<label>Setor<select>` com placeholder "Selecione o setor" +
-    4 opções: Parque Central, Praça das Flores, Jardim Botânico,
-    Av. das Palmeiras. Pré-selecionado quando o drawer é aberto a
+    4 opções: Parque do Mirim, Parque das Frutas, Praça da Liberdade,
+    Parque da Criança. Pré-selecionado quando o drawer é aberto a
     partir do mapa/alerta. - `<label>Tipo de serviço<select>` com placeholder "Selecione o tipo" - 4 opções: Roçagem, Poda, Limpeza, Irrigação. Pré-selecionado
     quando aberto do alerta (Roçagem). - `<label>Data prevista<input type="date" value="2026-10-12"></label>`. - Bloco de prioridade:
     `<span style="font-weight:500">Prioridade</span>` + `<div class="row"
@@ -401,8 +401,8 @@ aria-label="Reportar ocorrência">` com: - Header `<div style="display:flex;just
            `<label>ID de frota / contrato<input id="eqp" placeholder="Ex.: CORP-2026-018"></label>`.
        - `<label>Número de série<input placeholder="Ex.: 98234710"></label>`.
        - `<label>Localização inicial<select>` com "Depósito Central" +
-         "Setor Parque Central" / "Setor Praça das Flores" /
-         "Setor Jardim Botânico" / "Setor Av. das Palmeiras".
+         "Setor Parque do Mirim" / "Setor Parque das Frutas" /
+         "Setor Praça da Liberdade" / "Setor Parque da Criança".
        - `<button class="btn w" onclick="...">Salvar ativo</button>`: ao
          clicar, fecha o modal, mostra toast `"Ativo salvo"` e (se o
          usuário estiver em `/equipamentos`) insere o novo ativo no topo
@@ -415,9 +415,9 @@ aria-label="Reportar ocorrência">` com: - Header `<div style="display:flex;just
        `<span class="sm mu">Chuva intensa prevista amanhã. Escolha novas datas.</span>`
        e botão `✕`.
      - Form `.fm` com 2 cards `<div class="occ">`:
-       - "OS-1042 · Roçagem" · "Parque Central" ·
+       - "OS-1042 · Roçagem" · "Parque do Mirim" ·
          `<label style="margin-top:8px">Nova data<input type="date" value="2026-10-14"></label>`.
-       - "OS-1043 · Poda de árvores" · "Praça das Flores" ·
+       - "OS-1043 · Poda de árvores" · "Parque das Frutas" ·
          `<label style="margin-top:8px">Nova data<input type="date" value="2026-10-16"></label>`.
      - `<button class="btn w" onclick="...">Confirmar novas datas</button>`:
        ao clicar, fecha o modal e mostra toast `"2 ordens reagendadas"`.
@@ -428,7 +428,7 @@ aria-label="Reportar ocorrência">` com: - Header `<div style="display:flex;just
      chips (estilo `<button class="chip" style="border-radius:10px;
 text-align:left; padding:12px">`): - "Roçadeira FS 55 · Stihl · 640 h" (default `aria-pressed="true"`) - "Motosserra 372 XP · Husqvarna · 860 h" - "Soprador BR 600 · Stihl · 410 h" - `<button class="btn w" onclick="...">Confirmar substituição</button>`:
      ao clicar, fecha o modal e mostra toast
-     `"Equipamento realocado para Praça das Flores"`.
+     `"Equipamento realocado para Parque das Frutas"`.
 
 ### RF-15 — Tema claro/escuro (claro/escuro automático + manual)
 
@@ -466,7 +466,7 @@ text-align:left; padding:12px">`): - "Roçadeira FS 55 · Stihl · 640 h" (defau
   com `display: block` por 2200 ms, contendo a mensagem exata do HTML
   (ex.: "Chuva simulada em todas as estações", "Ordem de serviço emitida",
   "Ativo salvo", "2 ordens reagendadas",
-  "Equipamento realocado para Praça das Flores", "Serviço finalizado",
+  "Equipamento realocado para Parque das Frutas", "Serviço finalizado",
   "Relato enviado") e some depois.
 
 ### RF-17 — Logout retorna para a tela de login
@@ -902,7 +902,7 @@ showToast(msg) }`.
         e botão "Confirmar novas datas" (fecha, toast `"2 ordens reagendadas"`).
   - [ ] **T8** — `ReallocateModal.jsx` (RF-14.3) com lista de
         equipamentos e botão "Confirmar substituição" (fecha, toast
-        `"Equipamento realocado para Praça das Flores"`).
+        `"Equipamento realocado para Parque das Frutas"`).
 - **Dependências:** Fase 4.
 - **Pronto quando:** todas as 8 páginas renderizam; todos os 5
   modais/drawers/sheet abrem e fecham; todos os toasts disparam com

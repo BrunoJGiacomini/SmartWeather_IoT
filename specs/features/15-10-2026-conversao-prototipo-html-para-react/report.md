@@ -19,10 +19,10 @@
   - Criar páginas placeholder e `LoginPage` mínimo.
   - **Validação:** `npm run lint` → 0 erros, 0 avisos.
     `npm run build` → `built in 440ms`, 49 módulos, dist/index.html
-    + dist/assets/index-*.css (7.74 kB) + dist/assets/index-*.js
-    (321.92 kB). `npm run dev` → servidor responde 200 em `/` e em
-    `/clima`. HTML servido traz `lang="pt-BR"`, `<title>SmartWeather</title>`
-    e link do Google Fonts `Instrument Sans`.
+    - dist/assets/index-_.css (7.74 kB) + dist/assets/index-_.js
+      (321.92 kB). `npm run dev` → servidor responde 200 em `/` e em
+      `/clima`. HTML servido traz `lang="pt-BR"`, `<title>SmartWeather</title>`
+      e link do Google Fonts `Instrument Sans`.
   - **Como validar:** `npm run lint` verde; `npm run build` verde; abrir
     `http://localhost:5173/` mostra o login mínimo; clicar em entrar navega
     para `/clima` (placeholder); todas as rotas internas respondem com
@@ -92,7 +92,7 @@
     Toasts verificados: "Chuva simulada em todas as estações",
     "Chuva simulada: {nome}", "Ordem de serviço emitida", "Serviço
     finalizado", "Relato enviado", "Ativo salvo", "2 ordens reagendadas",
-    "Equipamento realocado para Praça das Flores". Toggle de tema em
+    "Equipamento realocado para Parque das Frutas". Toggle de tema em
     `/perfil` reflete em `data-theme` no `documentElement` (atualizado
     via `useEffect` em `AuthProvider`). Stepper respeita mínimo 0.
     Bottom sheet dentro do `.phone` com overlay `.sbd`.
@@ -105,7 +105,7 @@
     tabela de `/equipamentos` e mostra toast `"Ativo salvo"`.
     "Reagendar" abre modal com 2 cards; "Confirmar" mostra toast
     `"2 ordens reagendadas"`. "Realocar" abre modal com 3 chips;
-    "Confirmar" mostra toast `"Equipamento realocado para Praça das Flores"`.
+    "Confirmar" mostra toast `"Equipamento realocado para Parque das Frutas"`.
 
 - [x] **Fase 6 — Fechamento e validação de paridade**
   - `npm run lint` e `npm run build` verdes.
@@ -135,7 +135,7 @@
         Av. Palmeiras". Clique em polígono abre o popup lateral com
         pill de status, métricas e ocorrência. Botão "+ Emitir OS"
         abre o drawer "Nova ordem de serviço" com o setor
-        pré-selecionado (Parque Central).
+        pré-selecionado (Parque do Mirim).
       - Drawer de nova OS renderiza setor (4 opções), tipo (4 opções),
         data `2026-10-12`, 3 chips de prioridade exclusivos (🔴 Alta
         pressionado), stepper Operadores = 3 (mínimo 0), 4 chips

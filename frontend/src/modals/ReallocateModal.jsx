@@ -13,7 +13,7 @@ function ReallocateModal() {
 
   const handleConfirm = () => {
     closeModal();
-    showToast("Equipamento realocado para Praça das Flores");
+    showToast("Equipamento realocado para Parque das Frutas");
   };
 
   return (

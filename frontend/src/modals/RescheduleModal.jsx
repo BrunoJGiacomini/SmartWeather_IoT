@@ -3,12 +3,12 @@ import { useUi } from "../context/useUi.js";
 const REAGENDAR = [
   {
     titulo: "OS-1042 · Roçagem",
-    setor: "Parque Central",
+    setor: "Parque do Mirim",
     data: "2026-10-14",
   },
   {
     titulo: "OS-1043 · Poda de árvores",
-    setor: "Praça das Flores",
+    setor: "Parque das Frutas",
     data: "2026-10-16",
   },
 ];

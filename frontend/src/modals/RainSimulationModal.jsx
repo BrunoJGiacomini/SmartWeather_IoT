@@ -61,6 +61,12 @@ function RainSimulationModal({ areas = [] }) {
             <p className="sm mu" style={{ marginTop: 4 }}>
               Novo prazo: {area.simulacao.prazo} (+{area.simulacao.tempoExtra})
             </p>
+            {area.simulacao.dataAnterior && (
+              <p className="sm mu" style={{ marginTop: 2 }}>
+                Reagendada de {area.simulacao.dataAnterior} para{" "}
+                {area.simulacao.prazo}
+              </p>
+            )}
           </div>
         ))}
       </div>
@@ -69,11 +75,11 @@ function RainSimulationModal({ areas = [] }) {
         className="row"
         style={{ marginTop: 16, justifyContent: "flex-end", gap: 10 }}
       >
-        <button className="btn o" onClick={handleViewAlerts}>
-          Ver área de alertas
+        <button className="btn o" onClick={handleAck}>
+          Fechar
         </button>
-        <button className="btn" onClick={handleAck}>
-          Entendi
+        <button className="btn" onClick={handleViewAlerts}>
+          Ver áreas de alertas
         </button>
       </div>
     </>

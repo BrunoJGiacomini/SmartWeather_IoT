@@ -302,48 +302,40 @@ tr:last-child td {
   margin-bottom: 16px;
 }
 .map {
+  --sector-r: #e5484d;
+  --sector-y: #e9a100;
+  --sector-g: #10b981;
+  --sector-b: #2f7de1;
   position: relative;
+  aspect-ratio: 620 / 380;
+  max-height: calc(100vh - 140px);
+  margin-inline: auto;
   background: var(--sf2);
   border-radius: 12px;
   overflow: hidden;
   border: 1px solid var(--ln);
 }
-.map svg {
-  display: block;
-  width: 100%;
-  height: auto;
+.leaflet-map {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
 }
-.poly {
-  fill: var(--g);
-  fill-opacity: 0.18;
-  stroke: var(--g);
-  stroke-width: 1.5;
-  cursor: pointer;
+.leaflet-map .leaflet-container {
+  width: 100%;
+  height: 100%;
+  background: var(--sf2);
+  font: inherit;
+}
+.leaflet-map path {
   transition: fill-opacity 0.15s;
 }
-.poly:hover {
-  fill-opacity: 0.38;
+.leaflet-map a.leaflet-popup-link {
+  color: var(--b);
 }
-.poly.sel {
-  fill-opacity: 0.5;
-  stroke-width: 3;
-}
-.poly.r {
-  fill: var(--r);
-  stroke: var(--r);
-}
-.poly.y {
-  fill: var(--y);
-  stroke: var(--y);
-}
-.lbl {
-  font-size: 12px;
-  font-weight: 600;
-  fill: var(--tx);
-  pointer-events: none;
-  paint-order: stroke;
-  stroke: var(--sf2);
-  stroke-width: 3px;
+@media (prefers-reduced-motion: reduce) {
+  .leaflet-map path {
+    transition: none;
+  }
 }
 .pop {
   position: absolute;
@@ -359,6 +351,7 @@ tr:last-child td {
   gap: 14px;
   flex-direction: column;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  z-index: 10;
 }
 .pop.on {
   display: flex;

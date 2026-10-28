@@ -1,28 +1,17 @@
-/**
- * Service order domain helpers.
- *
- * Kept free of React so the rules can be unit tested without a DOM.
- */
+import { SECTORS } from "../mocks/sectors.js";
 
-/** Pill color for each priority, matching the chips in the "Nova OS" modal. */
 export const PRIORITY_COLORS = {
   Alta: "r",
   Média: "y",
   Baixa: "g",
 };
 
-/** Sectors offered by the modal. */
-export const SECTOR_OPTIONS = [
-  "Parque Central",
-  "Praça das Flores",
-  "Jardim Botânico",
-  "Av. das Palmeiras",
-];
+export const SECTOR_OPTIONS = Object.values(SECTORS).map(
+  (sector) => sector.nome,
+);
 
-/** Service types offered by the modal. */
 export const SERVICE_TYPE_OPTIONS = ["Roçagem", "Poda", "Limpeza", "Irrigação"];
 
-/** Equipment offered by the modal, with the wording used in the table. */
 export const EQUIPMENT_OPTIONS = [
   { label: "Roçadeira FS 450 · Stihl", tipo: "roçadeira", marca: "Stihl" },
   { label: "Roçadeira FS 55 · Stihl", tipo: "roçadeira", marca: "Stihl" },
@@ -38,12 +27,6 @@ const EQUIPMENT_BY_LABEL = new Map(
   EQUIPMENT_OPTIONS.map((option) => [option.label, option]),
 );
 
-/**
- * Converts an ISO date (YYYY-MM-DD) into the Brazilian format (DD/MM/AAAA).
- *
- * @param {string} isoDate
- * @returns {string}
- */
 export function formatBrDate(isoDate) {
   if (!isoDate) return "—";
 
@@ -54,13 +37,6 @@ export function formatBrDate(isoDate) {
   return `${day}/${month}/${year}`;
 }
 
-/**
- * Reverse of `formatBrDate`: turns the date shown in the table back into the
- * ISO format expected by the date input of the form.
- *
- * @param {string} brDate
- * @returns {string} ISO date (YYYY-MM-DD) or an empty string
- */
 export function parseBrDate(brDate) {
   const match = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(String(brDate || "").trim());
   if (!match) return "";
@@ -69,25 +45,12 @@ export function parseBrDate(brDate) {
   return `${year}-${month}-${day}`;
 }
 
-/**
- * Extracts the priority key from the text shown in the table, dropping the
- * deadline suffix (e.g. "Alta · vence em 2d" becomes "Alta").
- *
- * @param {string} priority
- * @returns {string}
- */
 export function parsePriorityKey(priority) {
   return String(priority || "")
     .split("·")[0]
     .trim();
 }
 
-/**
- * Normalizes a plural equipment type to its singular form.
- *
- * @param {string} word
- * @returns {string}
- */
 function singularize(word) {
   const text = String(word || "")
     .trim()
@@ -98,14 +61,6 @@ function singularize(word) {
   return text;
 }
 
-/**
- * Picks the equipment labels matching a type and a brand.
- *
- * @param {string} tipo
- * @param {string} marca
- * @param {number} quantity
- * @returns {string[]}
- */
 function equipmentLabelsFor(tipo, marca, quantity) {
   const brand = String(marca || "")
     .trim()
@@ -120,13 +75,6 @@ function equipmentLabelsFor(tipo, marca, quantity) {
   return candidates.slice(0, quantity).map((option) => option.label);
 }
 
-/**
- * Reverse of `buildResources`: recovers the operator count and the equipment
- * labels from the text shown in the table.
- *
- * @param {string} resources
- * @returns {{ operadores: number, equipamentos: string[] }}
- */
 export function parseResources(resources) {
   const parts = String(resources || "")
     .split("·")
@@ -156,12 +104,6 @@ export function parseResources(resources) {
   return { operadores, equipamentos };
 }
 
-/**
- * Builds the identifier of the next order from the highest one in the list.
- *
- * @param {Array<{ id: string }>} serviceOrders
- * @returns {string}
- */
 export function nextServiceOrderId(serviceOrders = []) {
   const numbers = serviceOrders
     .map((order) => Number(String(order.id).replace(/\D/g, "")))
@@ -171,14 +113,6 @@ export function nextServiceOrderId(serviceOrders = []) {
   return `OS-${next}`;
 }
 
-/**
- * Describes the allocated resources in the same wording used by the table,
- * e.g. "3 operadores · 2 roçadeiras Stihl".
- *
- * @param {number} operators
- * @param {string[]} equipmentLabels
- * @returns {string}
- */
 export function buildResources(operators = 0, equipmentLabels = []) {
   const parts = [`${operators} operador${operators === 1 ? "" : "es"}`];
   const groups = new Map();
@@ -200,24 +134,6 @@ export function buildResources(operators = 0, equipmentLabels = []) {
   return parts.join(" · ");
 }
 
-/**
- * Builds the order created by the "Nova ordem de serviço" modal.
- *
- * The order keeps both the text shown in the table (`data`, `recursos`) and
- * the structured values behind it, so the form can be reopened with the same
- * content later on.
- *
- * @param {object} form
- * @param {string} form.setor
- * @param {string} form.tipoServico
- * @param {string} form.data ISO date (YYYY-MM-DD)
- * @param {string} form.prioridade
- * @param {number} form.operadores
- * @param {string[]} form.equipamentos
- * @param {string} form.instrucoes
- * @param {Array<{ id: string }>} form.serviceOrders
- * @returns {object}
- */
 export function buildServiceOrder({
   setor = "",
   tipoServico = "",
@@ -245,15 +161,6 @@ export function buildServiceOrder({
   };
 }
 
-/**
- * Recovers the form state of an order.
- *
- * Orders created by the app carry the structured fields; orders coming from
- * the mock data are recovered from the text shown in the table.
- *
- * @param {object} order
- * @returns {{ setor: string, tipoServico: string, data: string, prioridade: string, operadores: number, equipamentos: string[], instrucoes: string }}
- */
 export function orderToForm(order = {}) {
   const recursos = parseResources(order.recursos);
   const operadores = Number.isFinite(order.operadores)
@@ -274,15 +181,6 @@ export function orderToForm(order = {}) {
   };
 }
 
-/**
- * Applies the changes of the edit form to a single order, keeping its
- * position, id and status in the list.
- *
- * @param {Array<object>} serviceOrders
- * @param {string} id
- * @param {object} changes form values
- * @returns {Array<object>}
- */
 export function updateServiceOrder(serviceOrders = [], id, changes = {}) {
   return serviceOrders.map((order) => {
     if (order.id !== id) return order;
@@ -334,13 +232,6 @@ export function updateServiceOrder(serviceOrders = [], id, changes = {}) {
   });
 }
 
-/**
- * Returns a new list with the order added on top, keeping the previous ones.
- *
- * @param {Array<object>} serviceOrders
- * @param {object} order
- * @returns {Array<object>}
- */
 export function addServiceOrder(serviceOrders = [], order) {
   return [order, ...serviceOrders];
 }

@@ -1,9 +1,9 @@
 export const SERVICE_ORDERS = [
   {
     id: "OS-1042",
-    setor: "Parque Central",
+    setor: "Parque do Mirim",
     servico: "Roçagem",
-    status: "Em andamento",
+    status: "Agendada",
     recursos: "4 operadores · 2 roçadeiras Stihl",
     cor: "r",
     prioridade: "Alta · vence em 2d",
@@ -11,7 +11,7 @@ export const SERVICE_ORDERS = [
   },
   {
     id: "OS-1043",
-    setor: "Praça das Flores",
+    setor: "Parque das Frutas",
     servico: "Poda de árvores",
     status: "Agendada",
     recursos: "3 operadores · 1 motosserra Husqvarna",
@@ -21,7 +21,7 @@ export const SERVICE_ORDERS = [
   },
   {
     id: "OS-1039",
-    setor: "Av. das Palmeiras",
+    setor: "Parque da Criança",
     servico: "Limpeza de canteiros",
     status: "Concluída",
     recursos: "2 operadores · 1 soprador Stihl",
@@ -31,7 +31,7 @@ export const SERVICE_ORDERS = [
   },
   {
     id: "OS-1044",
-    setor: "Jardim Botânico",
+    setor: "Praça da Liberdade",
     servico: "Irrigação",
     status: "Aguardando chuva",
     recursos: "2 operadores",

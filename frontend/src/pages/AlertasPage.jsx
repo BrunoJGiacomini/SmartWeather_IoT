@@ -13,7 +13,7 @@ function AlertasPage() {
     else if (alert.action === "reallocate") openModal(<ReallocateModal />);
     else if (alert.action === "newOs")
       openModal(
-        <NewOsModal initialSetor="Parque Central" initialServico="Roçagem" />,
+        <NewOsModal initialSetor="Parque do Mirim" initialServico="Roçagem" />,
       );
     else if (alert.action === "viewOs") {
       const os = serviceOrders.find((o) => o.id === alert.osId);

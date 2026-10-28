@@ -1,4 +1,5 @@
-import MapView from "../components/MapView.jsx";
+import { useCallback } from "react";
+import SectorMap from "../components/SectorMap.jsx";
 import SectorPopup from "../components/SectorPopup.jsx";
 import { useUi } from "../context/useUi.js";
 import { SECTORS } from "../mocks/sectors.js";
@@ -12,9 +13,12 @@ function MapaPage() {
     openModal,
   } = useUi();
 
-  const handleSelectSector = (id) => {
-    setSelectedSectorId(id);
-  };
+  const handleSelectSector = useCallback(
+    (id) => {
+      setSelectedSectorId(id);
+    },
+    [setSelectedSectorId],
+  );
 
   const handleEmitOs = (setorNome) => {
     openModal(<NewOsModal initialSetor={setorNome} />);
@@ -31,7 +35,7 @@ function MapaPage() {
         </div>
       </div>
       <div className="map">
-        <MapView
+        <SectorMap
           sectors={SECTORS}
           selectedId={selectedSectorId}
           onSelect={handleSelectSector}
